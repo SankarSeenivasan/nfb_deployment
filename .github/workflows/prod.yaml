@@ -4,12 +4,11 @@ jobs:
   build:
     runs-on: ubuntu-latest
     if: contains(github.event.head_commit.message, 'deployment')
+  steps:
     - uses: actions/checkout@v2
     - name: Clone OrganGuI Repository        
-    run: git clone https://SankarSeenivasan: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@github.com/${{ secrets.GIT_USER }}/CI-CD-Pipeline.git frontend              
-    - name: Clone OrgannServer Repository        
-    run: git clone https://SankarSeenivasan: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@github.com/${{ secrets.GIT_USER }}/Server.git backend
-   steps:
+      run: git clone https://SankarSeenivasan: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@github.com/${{ SankarSeenivasan }}/CI-CD-Pipeline             
+steps:
       - uses: actions/checkout@v3
       - name: Set up Python 3.9
         uses: actions/setup-python@v4
