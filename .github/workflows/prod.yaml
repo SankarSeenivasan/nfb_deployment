@@ -1,0 +1,78 @@
+name: Production Server Deployment 
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    if: contains(github.event.head_commit.message, 'deployment')
+    - uses: actions/checkout@v2
+    - name: Clone OrganGuI Repository        
+    run: git clone https://SankarSeenivasan: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@github.com/${{ secrets.GIT_USER }}/CI-CD-Pipeline.git frontend              
+    - name: Clone OrgannServer Repository        
+    run: git clone https://SankarSeenivasan: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@github.com/${{ secrets.GIT_USER }}/Server.git backend
+   steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.9
+      - name: Install dependencies
+        run: |
+          #cd backend
+          #pip install -r requirements.txt 
+      - name: Run migrations
+        run: |
+          #cd backend
+         # python manage.py makemigrations
+          #python manage.py migrate
+      - name: Install Node.js
+        uses: actions/setup-node@v2-beta
+        with:
+          node-version: "14"
+      - name: Install SSH Key
+        uses: shimataro/ssh-key-action@v2 
+        with:
+          key: ${{ secrets.SSH_PRIVATE_KEY_PROD_SERVER }}
+          known_hosts: unnecessary
+
+      - name: Adding Known Hosts
+        run: ssh-keyscan -p ${{ secrets.SSH_PORT_PROD_SERVER}} -H ${{ secrets.SSH_HOST_PROD_SERVER}} >> ~/.ssh/known_hosts
+
+      - name: Sync File
+        env:
+          dest: "${{ secrets.SSH_USER_PROD_SERVER}}@${{ secrets.SSH_HOST_PROD_SERVER}}:/home/administration/CICD_Pipeline"
+        run: |
+          echo "${{secrets.SSH_PRIVATE_KEY_PROD_SERVER}}" > deploy_key
+          chmod 600 ./deploy_key
+          sudo rsync -chav --delete \
+            -e 'ssh -i ./deploy_key -o StrictHostKeyChecking=no' \
+            --exclude /deploy_key \
+            --exclude /.git/ \
+            --exclude /.gitignore/ \
+            --exclude /nginx/certbot \
+            --exclude /.github/ \
+            --exclude /node_modules/ \
+            ./ ${{env.dest}}
+  Deployment:
+    name: Deploy in Prod Server
+    needs: [build]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST_PROD_SERVER }}
+          username: ${{ secrets.SSH_USER_PROD_SERVER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY_PROD_SERVER }}
+          port: ${{ secrets.SSH_PORT_PROD_SERVER }}
+          script: |
+            cd /home/administration/CICD_Pipeline
+            cd nfb_frontend
+            npm install --legacy-peer-deps
+            npm run build --timeout=60000
+            cd ..
+            cd organflow_frontend
+            npm install --legacy-peer-deps
+            npm run build --timeout=60000
+            cd ..
+            docker-compose down
+            docker-compose up --build -d
+            
