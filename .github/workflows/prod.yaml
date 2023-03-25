@@ -31,7 +31,7 @@ jobs:
             --exclude /nginx/certbot \
             --exclude /.github/ \
             --exclude /node_modules/ \
-            ./work ${{env.dest}}/sample
+            ./work ${{env.dest}}
             Deployment:
              name: Deploy in Prod Server
              needs: [build]
@@ -44,7 +44,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY_PROD_SERVER }}
           port: ${{ secrets.SSH_PORT_PROD_SERVER }}
           script: |
-            cd //home/administration/clone_github
+            cd /home/administration/clone_github
             #cd nfb_frontend
             #npm install --legacy-peer-deps
             #npm run build --timeout=60000
