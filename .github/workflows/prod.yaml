@@ -19,7 +19,8 @@ jobs:
 
     - name: Sync File
       env:
-          dest: "${{ secrets.SSH_USER_PROD_SERVER}}@${{ secrets.SSH_HOST_PROD_SERVER}}:/home/administration/CICD_Pipeline"
+          dest: "${{ secrets.SSH_USER_PROD_SERVER}}@${{ secrets.SSH_HOST_PROD_SERVER}}:/home/administration/clone_github
+"
       run: |
           echo "${{secrets.SSH_PRIVATE_KEY_PROD_SERVER}}" > deploy_key
           chmod 600 ./deploy_key
