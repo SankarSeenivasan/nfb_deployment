@@ -7,7 +7,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Clone OrganGuI Repository       
-      run: git clone https://SankarSeenivasan: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@github.com/SankarSeenivasan/CI-CD-Pipeline.git path            
+      run: git clone https://SankarSeenivasan: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@github.com/SankarSeenivasan/CI-CD-Pipeline.git work            
     - name: Install SSH Key
       uses: shimataro/ssh-key-action@v2 
       with:
@@ -31,7 +31,7 @@ jobs:
             --exclude /nginx/certbot \
             --exclude /.github/ \
             --exclude /node_modules/ \
-           ./path ${{env.dest}}
+            ./work ${{env.dest}}
             Deployment:
              name: Deploy in Prod Server
              needs: [build]
