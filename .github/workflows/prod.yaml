@@ -6,7 +6,7 @@ jobs:
     #if: contains(github.event.head_commit.message, 'deployment')
     steps:
     - uses: actions/checkout@v2
-    - name: Clone OrganGuI Repository        
+    - name: Clone OrganGuI Repository       
       run: git clone https://SankarSeenivasan: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@github.com/SankarSeenivasan/CI-CD-Pipeline.git work             
     - name: Install SSH Key
       uses: shimataro/ssh-key-action@v2 
