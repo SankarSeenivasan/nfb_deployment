@@ -26,27 +26,4 @@ jobs:
           sudo rsync -chav --delete \
             -e 'ssh -i ./deploy_key -o StrictHostKeyChecking=no' \
             ./newely ${{env.dest}}
-            Deployment:
-             name: Deploy in Prod Server
-             needs: [build]
-             runs-on: ubuntu-latest
-             steps:
-             - uses: appleboy/ssh-action@master
-           with:
-          host: ${{ secrets.SSH_HOST_PROD_SERVER }}
-          username: ${{ secrets.SSH_USER_PROD_SERVER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY_PROD_SERVER }}
-          port: ${{ secrets.SSH_PORT_PROD_SERVER }}
-          script: |
-            cd /home/administration/clone_github
-            #cd nfb_frontend
-            #npm install --legacy-peer-deps
-            #npm run build --timeout=60000
-            #cd ..
-            #cd organflow_frontend
-            #npm install --legacy-peer-deps
-            #npm run build --timeout=60000
-            #cd ..
-            #docker-compose down
-            #docker-compose up --build -d
-            
+    
