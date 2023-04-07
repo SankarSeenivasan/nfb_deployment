@@ -7,7 +7,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Clone OrganGuI Repository       
-      run: git clone -b test.yaml https://SankarSeenivasan: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@github.com/SankarSeenivasan/test.py/CI-CD-Pipeline.git newley        
+      run: git clone -b test.yaml https://SankarSeenivasan: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@github.com/SankarSeenivasan/CI-CD-Pipeline.git newley        
     - name: Install SSH Key
       uses: shimataro/ssh-key-action@v2 
       with:
