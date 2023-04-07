@@ -7,7 +7,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Clone OrganGuI Repository       
-      run: git clone -b test.yaml https://SankarSeenivasan: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@github.com/SankarSeenivasan/CI-CD-Pipeline.git newley        
+      run: git clone -b test.yaml https://SankarSeenivasan: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@github.com/SankarSeenivasan/CI-CD-Pipeline.git newely        
     - name: Install SSH Key
       uses: shimataro/ssh-key-action@v2 
       with:
@@ -19,7 +19,7 @@ jobs:
 
     - name: Sync File
       env:
-          dest: "${{ secrets.SSH_USER_PROD_SERVER}}@${{ secrets.SSH_HOST_PROD_SERVER}}:/home/administration/clone_github"
+          dest: "${{ secrets.SSH_USER_PROD_SERVER}}@${{ secrets.SSH_HOST_PROD_SERVER}}:/root/clone_github"
       run: |
           echo "${{secrets.SSH_PRIVATE_KEY_PROD_SERVER}}" > deploy_key
           chmod 700 ./deploy_key
